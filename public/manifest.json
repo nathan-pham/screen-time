@@ -7,10 +7,10 @@
         "service_worker": "background.js"
     },
     "permissions": [
-        "storage",
+        "alarms",
         "tabs",
         "activeTab",
-        "scripting",
+        "storage",
         "unlimitedStorage"
     ],
     "action": {

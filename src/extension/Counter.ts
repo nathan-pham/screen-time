@@ -1,8 +1,6 @@
 import browser from "webextension-polyfill";
 
 export default class Counter {
-    static SAVE_TIME_INTERVAL = 15 * 1000;
-
     currentDate: string;
     savedTime: Record<string, number> = {};
 
@@ -15,7 +13,9 @@ export default class Counter {
      * @returns Record of domain to time checked
      */
     async get() {
-        return (await browser.storage.local.get(this.currentDate)) || {};
+        const res = await browser.storage.local.get([this.currentDate]);
+        const browsingData = res[this.currentDate];
+        return browsingData || {};
     }
 
     /**

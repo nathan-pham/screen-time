@@ -7,10 +7,20 @@ const syncTabs = async () => {
     counter.update(tabs);
 };
 
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(async () => {
     console.log("Installed service worker");
 
-    // rountinely check all current tabs and save them into memory
-    setInterval(syncTabs, Counter.SAVE_TIME_INTERVAL);
+    // create alarm (more reliable than setInterval)
+    // https://stackoverflow.com/questions/66391018/how-do-i-call-a-function-periodically-in-a-manifest-v3-chrome-extension
+    const alarmName = "periodic";
+    const periodicAlarm = await browser.alarms.get(alarmName);
+    if (!periodicAlarm) {
+        browser.alarms.create(alarmName, { periodInMinutes: 1 });
+    }
+
+    syncTabs();
+});
+
+browser.alarms.onAlarm.addListener(() => {
     syncTabs();
 });
