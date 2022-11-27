@@ -1,0 +1,26 @@
+{
+    "name": "Screen Time",
+    "description": "Time management made simple.",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": [
+        "storage",
+        "tabs",
+        "activeTab",
+        "scripting",
+        "unlimitedStorage"
+    ],
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": {
+            "16": "/icons/favicon-16x16.png",
+            "32": "/icons/favicon-32x32.png"
+        }
+    },
+    "icons": {
+        "16": "/icons/favicon-16x16.png",
+        "32": "/icons/favicon-32x32.png",
+        "192": "/icons/android-chrome-192x192.png",
+        "512": "/icons/android-chrome-512x512.png"
+    }
+}

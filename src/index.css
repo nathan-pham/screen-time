@@ -1,0 +1,17 @@
+#root {
+    padding: 0 2rem;
+}
+
+h1 {
+    margin: 2rem 0 0 0;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+p {
+    margin: 0.75rem 0 0 0;
+    font-size: 1rem;
+    color: #666;
+}
