@@ -1,8 +1,8 @@
-header {
+.header {
     width: 100%;
 }
 
-h1 {
+.title {
     margin: 2rem 0 0 0;
     font-size: 2rem;
     display: flex;
@@ -10,7 +10,7 @@ h1 {
     gap: 0.75rem;
 }
 
-p {
+.subtitle {
     margin: 0.75rem 0 0 0;
     font-size: 1rem;
     color: #666;

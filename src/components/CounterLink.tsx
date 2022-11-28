@@ -9,7 +9,9 @@ interface CounterLinkProps {
 const CounterLink = ({ hostname, minutes }: CounterLinkProps) => {
     return (
         <div>
-            <img />
+            <img
+                src={`https://www.google.com/s2/favicons?domain=${hostname}&sz=32`}
+            />
             <div>
                 <p>{hostname}</p>
                 <p>{minutes}</p>

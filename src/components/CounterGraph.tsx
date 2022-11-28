@@ -1,24 +1,20 @@
 import { useEffect, useRef } from "react";
 import { Chart, registerables } from "chart.js";
-import { ClassifierLabels } from "../extension/Classifier";
-import useCounterData from "../hooks/useCounterData";
-import styles from "./CounterGraph.module.css";
 import { formatDistance } from "date-fns";
+
+import { ClassifierLabels } from "../extension/Classifier";
+import parseCounterData from "../utils/parseCounterData";
+import useCounterData from "../hooks/useCounterData";
+
+import styles from "./CounterGraph.module.css";
 
 Chart.register(...registerables);
 
-const parseCounterData = (counterData: ReturnType<typeof useCounterData>) => {
-    const parsedData: Partial<Record<ClassifierLabels, number>> = {};
-    for (const [_, data] of Object.entries(counterData)) {
-        const [label, minutesSpent] = data;
-        parsedData[label] = (parsedData[label] || 0) + minutesSpent;
-    }
+interface CounterGraphProps {
+    counterData: ReturnType<typeof useCounterData>;
+}
 
-    return parsedData;
-};
-
-const CounterGraph = () => {
-    const counterData = useCounterData();
+const CounterGraph = ({ counterData }: CounterGraphProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -36,7 +32,7 @@ const CounterGraph = () => {
                             label: (item) =>
                                 formatDistance(
                                     0,
-                                    (parseInt(item.formattedValue) / 60) * 1000
+                                    parseFloat(item.formattedValue) * 60 * 1000
                                 ),
                         },
                     },

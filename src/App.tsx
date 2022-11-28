@@ -1,14 +1,17 @@
+import useCounterData from "./hooks/useCounterData";
+
 import CounterGraph from "./components/CounterGraph";
+import Header from "./components/Header";
+import CounterLinks from "./components/CounterLinks";
 
 function App() {
+    const counterData = useCounterData();
+
     return (
         <>
-            <h1>
-                <img src="/icons/favicon-32x32.png" /> Screen Time
-            </h1>
-            <p>Time management made simple.</p>
-            <CounterGraph />
-            {/* <pre>{JSON.stringify(counterData, null, 2)}</pre> */}
+            <Header />
+            <CounterGraph counterData={counterData} />
+            <CounterLinks counterData={counterData} />
         </>
     );
 }
