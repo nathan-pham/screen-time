@@ -1,0 +1,53 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.imageWrapper {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 0.4rem;
+    background-color: white;
+    display: grid;
+    place-items: center;
+    flex: 0 0 2rem;
+}
+
+.image {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.infoWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.infoWrapper__hostname {
+    font-size: 1rem;
+    max-width: 12rem;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.barWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.barWrapper__bar {
+    height: 0.4rem;
+    border-radius: 10rem;
+    min-width: 0.75rem;
+    background-color: #888;
+}
+.barWrapper__time {
+    font-size: 0.9rem;
+    color: #888;
+    white-space: nowrap;
+}

@@ -1,7 +1,8 @@
 import useCounterData from "./hooks/useCounterData";
 
-import CounterGraph from "./components/CounterGraph";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
+import CounterGraph from "./components/CounterGraph";
 import CounterLinks from "./components/CounterLinks";
 
 function App() {
@@ -10,8 +11,15 @@ function App() {
     return (
         <>
             <Header />
-            <CounterGraph counterData={counterData} />
-            <CounterLinks counterData={counterData} />
+            {Object.keys(counterData).length === 0 ? (
+                <p>No data yet. Check back later!</p>
+            ) : (
+                <>
+                    <CounterGraph counterData={counterData} />
+                    <CounterLinks counterData={counterData} />
+                </>
+            )}
+            <Footer />
         </>
     );
 }

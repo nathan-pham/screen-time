@@ -18,12 +18,8 @@ const CounterGraph = ({ counterData }: CounterGraphProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        // no counter data, exit early
-        const canvas = canvasRef.current;
-        if (Object.keys(counterData).length === 0 || !canvas) return;
-
         const parsedData = parseCounterData(counterData);
-        new Chart(canvas, {
+        new Chart(canvasRef.current!, {
             type: "doughnut",
             options: {
                 plugins: {
@@ -45,11 +41,17 @@ const CounterGraph = ({ counterData }: CounterGraphProps) => {
                 labels: Object.values(ClassifierLabels).filter(
                     (v) => typeof v === "string"
                 ),
+
                 datasets: [
                     {
                         label: "Screen Time Dataset",
                         data: Object.values(parsedData),
                         hoverOffset: 4,
+                        backgroundColor: [
+                            "rgb(255, 99, 132)",
+                            "rgb(54, 162, 235)",
+                            "rgb(255, 205, 86)",
+                        ],
                     },
                 ],
             },

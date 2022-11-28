@@ -36,7 +36,17 @@ export default class Classifier {
     static async retrieveWebsiteContent(tabId: number) {
         const results = await browser.scripting.executeScript({
             target: { tabId, allFrames: true },
-            func: () => document.body.textContent,
+            func: () => {
+                const nodes = [...document.body.children]
+                    .filter((el) => {
+                        const tag = el.tagName.toLowerCase();
+                        const blacklist = ["script", "style"];
+                        return !blacklist.includes(tag);
+                    })
+                    .map((el) => el.textContent);
+
+                return nodes.join(" ");
+            },
         });
 
         return results[0].result;
