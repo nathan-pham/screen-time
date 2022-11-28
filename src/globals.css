@@ -31,6 +31,10 @@ body {
     display: none;
 }
 
+#root {
+    padding: 0 2rem;
+}
+
 /* display extension in a nice window in full window mode */
 @media (min-width: 351px) {
     html,

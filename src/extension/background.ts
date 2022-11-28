@@ -2,12 +2,15 @@ import browser from "webextension-polyfill";
 import Counter from "./Counter";
 
 const syncTabs = async () => {
-    const tabs = await browser.tabs.query({});
+    const tabs = await browser.tabs.query({
+        active: true,
+    });
+
     const counter = new Counter();
     counter.update(tabs);
 };
 
-chrome.runtime.onInstalled.addListener(async () => {
+browser.runtime.onInstalled.addListener(async () => {
     console.log("Installed service worker");
 
     // create alarm (more reliable than setInterval)

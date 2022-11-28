@@ -1,4 +1,13 @@
 import browser from "webextension-polyfill";
+import Classifier from "./Classifier";
+
+/*
+    {
+        "11/26/2022": {
+            "youtube.com": [1, 10] // (Label, 10 minutes spent)
+        }
+    }
+*/
 
 export default class Counter {
     currentDate: string;
@@ -28,7 +37,7 @@ export default class Counter {
         }
 
         // save changes
-        chrome.storage.local.set({
+        browser.storage.local.set({
             [this.currentDate]: this.savedTime,
         });
     }
@@ -46,17 +55,28 @@ export default class Counter {
      * @param tabs - List of tabs fetched with browser.tabs.query
      */
     async update(tabs: browser.Tabs.Tab[]) {
+        tabs = tabs.filter((tab) => tab.url);
+
         const savedTime = await this.get();
         const usedHostnames: Record<string, boolean> = {}; // don't count duplicate sites
-        for (const tab of tabs) {
-            if (tab.url) {
-                const hostname = new URL(tab.url).hostname;
-                if (!usedHostnames.hasOwnProperty(hostname)) {
-                    savedTime[hostname] = (savedTime[hostname] || 0) + 1;
-                }
 
-                usedHostnames[hostname] = true;
-            }
+        for (const tab of tabs) {
+            const url = new URL(tab.url!);
+            const hostname = url.hostname;
+            if (
+                !tab.id ||
+                !url.protocol.startsWith("http") ||
+                usedHostnames.hasOwnProperty(hostname)
+            )
+                continue;
+
+            const savedHostname = savedTime[hostname] || [];
+            savedTime[hostname] = [
+                savedHostname[0] || (await Classifier.classifyWebsite(tab.id)), // label
+                (savedHostname[1] || 0) + 1, // minutes counted
+            ];
+
+            usedHostnames[hostname] = true;
         }
 
         this.sync(savedTime);

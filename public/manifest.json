@@ -11,7 +11,12 @@
         "tabs",
         "activeTab",
         "storage",
-        "unlimitedStorage"
+        "unlimitedStorage",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://website-classifier.phamn23.repl.co/",
+        "https://*/*"
     ],
     "action": {
         "default_popup": "index.html",

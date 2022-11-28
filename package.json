@@ -6,18 +6,20 @@
     "scripts": {
         "dev": "vite",
         "build:frontend": "vite build",
-        "build:background": "npm run env LIB_NAME=background -- vite build",
+        "build:background": "vite build --config vite.background.config.ts",
         "build": "tsc && npm run build:frontend && npm run build:background",
         "preview": "vite preview"
     },
     "dependencies": {
-        "@types/chart.js": "^2.9.37",
+        "@types/date-fns": "^2.6.0",
         "chart.js": "^4.0.1",
+        "date-fns": "^2.29.3",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "webextension-polyfill": "^0.10.0"
     },
     "devDependencies": {
+        "@types/chart.js": "^2.9.37",
         "@types/chrome": "^0.0.203",
         "@types/node": "^18.11.9",
         "@types/react": "^18.0.22",
