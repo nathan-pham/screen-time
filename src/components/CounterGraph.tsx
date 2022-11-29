@@ -41,10 +41,7 @@ const CounterGraph = ({ counterData }: CounterGraphProps) => {
                 },
             },
             data: {
-                labels: Object.values(ClassifierLabels).filter(
-                    (v) => typeof v === "string"
-                ),
-
+                labels: Object.keys(parsedData),
                 datasets: [
                     {
                         label: "Screen Time Dataset",

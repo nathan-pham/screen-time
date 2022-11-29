@@ -28,7 +28,7 @@ const CounterLink = ({ hostname, minutes, maxMinutes }: CounterLinkProps) => {
                     <div
                         className={styles.barWrapper__bar}
                         style={{
-                            width: `${(minutes / maxMinutes) * 100}%`,
+                            width: `${(minutes / maxMinutes) * 10}rem`,
                         }}
                     ></div>
                     <span className={styles.barWrapper__time}>

@@ -85,7 +85,9 @@ export default class Counter {
 
             const savedHostname = savedTime[hostname] || [];
             savedTime[hostname] = [
-                savedHostname[0] || (await Classifier.classifyWebsite(tab.id)), // label
+                typeof savedHostname[0] === "undefined"
+                    ? await Classifier.classifyWebsite(tab.id)
+                    : savedHostname[0], // label
                 (savedHostname[1] || 0) + Counter.SYNC_INTERVAL, // minutes counted
             ];
 

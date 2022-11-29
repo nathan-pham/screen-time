@@ -62,7 +62,12 @@ export default class Classifier {
                     )
                     .map((data) => data.getAttribute("content"))
                     .filter((data) => data)
-                    .join(" ");
+                    .join(" ")
+                    .trim();
+
+                if (metadata.length > 0) {
+                    return metadata;
+                }
 
                 // method 2: get all page text content
                 const nodes = [...document.body.children]
@@ -72,9 +77,10 @@ export default class Classifier {
                         return !blacklist.includes(tag);
                     })
                     .map((el) => el.textContent)
-                    .join(" ");
+                    .join(" ")
+                    .trim();
 
-                return `${metadata} ${nodes}`.substring(0, 5000);
+                return nodes;
             },
         });
 
