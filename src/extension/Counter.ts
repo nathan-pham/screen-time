@@ -25,7 +25,7 @@ export default class Counter {
      * @returns - Minutes for dates-fn
      */
     static convertInterval(n: number) {
-        return n * Counter.SYNC_INTERVAL * 60 * 1000;
+        return n * 60 * 1000;
     }
 
     /**
