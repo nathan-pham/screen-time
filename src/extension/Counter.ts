@@ -10,11 +10,22 @@ import Classifier from "./Classifier";
 */
 
 export default class Counter {
+    static SYNC_INTERVAL = 0.5;
+
     currentDate: string;
     savedTime: Record<string, number> = {};
 
     constructor() {
         this.currentDate = new Date().toLocaleDateString();
+    }
+
+    /**
+     * Convert interval into minutes for dates-fn
+     * @param n - Interval stored in browser storage
+     * @returns - Minutes for dates-fn
+     */
+    static convertInterval(n: number) {
+        return n * Counter.SYNC_INTERVAL * 60 * 1000;
     }
 
     /**

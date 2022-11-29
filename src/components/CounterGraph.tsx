@@ -7,6 +7,7 @@ import parseCounterData from "../utils/parseCounterData";
 import useCounterData from "../hooks/useCounterData";
 
 import styles from "./CounterGraph.module.css";
+import Counter from "../extension/Counter";
 
 Chart.register(...registerables);
 
@@ -28,7 +29,9 @@ const CounterGraph = ({ counterData }: CounterGraphProps) => {
                             label: (item) =>
                                 formatDistance(
                                     0,
-                                    parseFloat(item.formattedValue) * 60 * 1000
+                                    Counter.convertInterval(
+                                        parseFloat(item.formattedValue)
+                                    )
                                 ),
                         },
                     },

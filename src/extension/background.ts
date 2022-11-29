@@ -18,7 +18,9 @@ browser.runtime.onInstalled.addListener(async () => {
     const alarmName = "periodic";
     const periodicAlarm = await browser.alarms.get(alarmName);
     if (!periodicAlarm) {
-        browser.alarms.create(alarmName, { periodInMinutes: 1 });
+        browser.alarms.create(alarmName, {
+            periodInMinutes: Counter.SYNC_INTERVAL,
+        });
     }
 
     syncTabs();

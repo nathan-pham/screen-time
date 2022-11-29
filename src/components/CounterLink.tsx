@@ -1,4 +1,5 @@
 import { intervalToDuration } from "date-fns/esm";
+import Counter from "../extension/Counter";
 import styles from "./CounterLink.module.css";
 
 interface CounterLinkProps {
@@ -8,7 +9,10 @@ interface CounterLinkProps {
 }
 
 const CounterLink = ({ hostname, minutes, maxMinutes }: CounterLinkProps) => {
-    const duration = intervalToDuration({ start: 0, end: minutes * 60 * 1000 });
+    const duration = intervalToDuration({
+        start: 0,
+        end: Counter.convertInterval(minutes),
+    });
 
     return (
         <div className={styles.wrapper}>

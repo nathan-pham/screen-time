@@ -26,11 +26,15 @@ export default class Classifier {
         "https://website-classifier.phamn23.repl.co/api/predict";
 
     static async classifyWebsite(tabId: number) {
-        const label = await Classifier.classify(
-            await Classifier.retrieveWebsiteContent(tabId)
-        );
+        try {
+            const label = await Classifier.classify(
+                await Classifier.retrieveWebsiteContent(tabId)
+            );
 
-        return label;
+            return label;
+        } catch (e) {
+            return ClassifierLabels.Other;
+        }
     }
 
     static async retrieveWebsiteContent(tabId: number) {
