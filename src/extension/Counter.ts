@@ -10,7 +10,9 @@ import Classifier from "./Classifier";
 */
 
 export default class Counter {
-    static SYNC_INTERVAL = 0.5;
+    // must be greater than 1
+    // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/alarms/create
+    static SYNC_INTERVAL = 1;
 
     currentDate: string;
     savedTime: Record<string, number> = {};

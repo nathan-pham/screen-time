@@ -41,15 +41,28 @@ export default class Classifier {
         const results = await browser.scripting.executeScript({
             target: { tabId, allFrames: true },
             func: () => {
+                // method 1: get meta data
+                const metadata = [...document.querySelectorAll("meta")]
+                    .filter((data) =>
+                        ["title", "description", "keywords"].includes(
+                            data.getAttribute("name")!
+                        )
+                    )
+                    .map((data) => data.getAttribute("content"))
+                    .filter((data) => data)
+                    .join(" ");
+
+                // method 2: get all page text content
                 const nodes = [...document.body.children]
                     .filter((el) => {
                         const tag = el.tagName.toLowerCase();
-                        const blacklist = ["script", "style"];
+                        const blacklist = ["script", "style", "link"];
                         return !blacklist.includes(tag);
                     })
-                    .map((el) => el.textContent);
+                    .map((el) => el.textContent)
+                    .join(" ");
 
-                return nodes.join(" ");
+                return `${metadata} ${nodes}`.substring(0, 5000);
             },
         });
 
