@@ -84,7 +84,7 @@ export default class Counter {
             const savedHostname = savedTime[hostname] || [];
             savedTime[hostname] = [
                 savedHostname[0] || (await Classifier.classifyWebsite(tab.id)), // label
-                (savedHostname[1] || 0) + 1, // minutes counted
+                (savedHostname[1] || 0) + Counter.SYNC_INTERVAL, // minutes counted
             ];
 
             usedHostnames[hostname] = true;
