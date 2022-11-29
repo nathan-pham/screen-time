@@ -42,11 +42,23 @@ export default class Classifier {
             target: { tabId, allFrames: true },
             func: () => {
                 // method 1: get meta data
+                const targets = ["title", "description", "keywords"];
+                const matchesTarget = (prop?: string | null) => {
+                    if (!prop) return false;
+
+                    for (const target of targets) {
+                        if (prop === target || prop.includes(target)) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                };
                 const metadata = [...document.querySelectorAll("meta")]
-                    .filter((data) =>
-                        ["title", "description", "keywords"].includes(
-                            data.getAttribute("name")!
-                        )
+                    .filter(
+                        (data) =>
+                            matchesTarget(data.getAttribute("name")) ||
+                            matchesTarget(data.getAttribute("property"))
                     )
                     .map((data) => data.getAttribute("content"))
                     .filter((data) => data)
