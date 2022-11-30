@@ -7,8 +7,11 @@ const getLabel = (value: number) =>
 const parseCounterData = (counterData: ReturnType<typeof useCounterData>) => {
     const parsedData: Record<string, number> = {};
     for (const [_, data] of Object.entries(counterData)) {
-        const [label, minutesSpent] = data;
-        parsedData[getLabel(label)] = (parsedData[label] || 0) + minutesSpent;
+        const [labelId, minutesSpent] = data;
+        const label = getLabel(labelId);
+        parsedData[label] =
+            (parsedData.hasOwnProperty(label) ? parsedData[label] : 0) +
+            minutesSpent;
     }
 
     return parsedData;

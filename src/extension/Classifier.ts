@@ -6,13 +6,13 @@ const entertainment = [
     "Streaming Services",
     "Social Networking and Messaging",
     "News",
+    "Food",
 ];
 
 const productivity = [
     "Business/Corporate",
     "Computers and Technology",
     "Education",
-    "Food",
 ];
 
 export enum ClassifierLabels {
@@ -33,8 +33,17 @@ export default class Classifier {
 
             return label;
         } catch (e) {
+            console.log(e);
             return ClassifierLabels.Other;
         }
+    }
+
+    static stripContent(content: string) {
+        return content
+            .trim()
+            .toLowerCase()
+            .replace(/[^\w\s\']|_/g, "")
+            .replace(/\s+/g, " ");
     }
 
     static async retrieveWebsiteContent(tabId: number) {
@@ -54,6 +63,7 @@ export default class Classifier {
 
                     return false;
                 };
+
                 const metadata = [...document.querySelectorAll("meta")]
                     .filter(
                         (data) =>
@@ -62,25 +72,16 @@ export default class Classifier {
                     )
                     .map((data) => data.getAttribute("content"))
                     .filter((data) => data)
-                    .join(" ")
-                    .trim();
-
-                if (metadata.length > 0) {
-                    return metadata;
-                }
+                    .join(" ");
 
                 // method 2: get all page text content
-                const nodes = [...document.body.children]
-                    .filter((el) => {
-                        const tag = el.tagName.toLowerCase();
-                        const blacklist = ["script", "style", "link"];
-                        return !blacklist.includes(tag);
-                    })
+                const nodes = [
+                    ...document.querySelectorAll("p,h1,h2,h3,h4,h5,li"),
+                ]
                     .map((el) => el.textContent)
-                    .join(" ")
-                    .trim();
+                    .join(" ");
 
-                return nodes;
+                return Classifier.stripContent(`${metadata} ${nodes}`);
             },
         });
 
@@ -88,11 +89,6 @@ export default class Classifier {
     }
 
     static async classify(content: string) {
-        content = content
-            .toLowerCase()
-            .replace(/[^\w\s\']|_/g, "")
-            .replace(/\s+/g, " ");
-
         const prediction = (
             await fetch(Classifier.WEBSITE_API, {
                 method: "POST",
