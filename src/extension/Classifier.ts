@@ -33,7 +33,6 @@ export default class Classifier {
 
             return label;
         } catch (e) {
-            console.log(e);
             return ClassifierLabels.Other;
         }
     }
@@ -76,19 +75,23 @@ export default class Classifier {
 
                 // method 2: get all page text content
                 const nodes = [
-                    ...document.querySelectorAll("p,h1,h2,h3,h4,h5,li"),
+                    ...document.querySelectorAll("p,h1,h2,h3,h4,h5,ul"),
                 ]
                     .map((el) => el.textContent)
                     .join(" ");
 
-                return Classifier.stripContent(`${metadata} ${nodes}`);
+                return `${metadata} ${nodes}`;
             },
         });
 
-        return results[0].result;
+        return Classifier.stripContent(results[0].result);
     }
 
     static async classify(content: string) {
+        if (!content) {
+            return ClassifierLabels.Other;
+        }
+
         const prediction = (
             await fetch(Classifier.WEBSITE_API, {
                 method: "POST",
