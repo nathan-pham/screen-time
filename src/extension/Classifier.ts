@@ -1,20 +1,5 @@
 import browser from "webextension-polyfill";
 
-const entertainment = [
-    "Adult",
-    "Games",
-    "Streaming Services",
-    "Social Networking and Messaging",
-    "News",
-    "Food",
-];
-
-const productivity = [
-    "Business/Corporate",
-    "Computers and Technology",
-    "Education",
-];
-
 export enum ClassifierLabels {
     Entertainment = 0,
     Productivity = 1,
@@ -27,10 +12,8 @@ export default class Classifier {
 
     static async classifyWebsite(tabId: number) {
         try {
-            const label = await Classifier.classify(
-                await Classifier.retrieveWebsiteContent(tabId)
-            );
-
+            const content = await Classifier.retrieveWebsiteContent(tabId);
+            const label = await Classifier.classify(content);
             return label;
         } catch (e) {
             return ClassifierLabels.Other;
@@ -63,6 +46,9 @@ export default class Classifier {
                     return false;
                 };
 
+                const title =
+                    document.querySelector("title")?.textContent || "";
+
                 const metadata = [...document.querySelectorAll("meta")]
                     .filter(
                         (data) =>
@@ -80,7 +66,7 @@ export default class Classifier {
                     .map((el) => el.textContent)
                     .join(" ");
 
-                return `${metadata} ${nodes}`;
+                return `${title} ${metadata} ${nodes}`;
             },
         });
 
@@ -88,10 +74,6 @@ export default class Classifier {
     }
 
     static async classify(content: string) {
-        if (!content) {
-            return ClassifierLabels.Other;
-        }
-
         const prediction = (
             await fetch(Classifier.WEBSITE_API, {
                 method: "POST",
@@ -103,9 +85,24 @@ export default class Classifier {
         ).prediction;
 
         // sort primary categories into simpler versions
-        if (entertainment.includes(prediction)) {
+        if (
+            [
+                "Adult",
+                "Games",
+                "Streaming Services",
+                "Social Networking and Messaging",
+                "News",
+                "Food",
+            ].includes(prediction)
+        ) {
             return ClassifierLabels.Entertainment;
-        } else if (productivity.includes(prediction)) {
+        } else if (
+            [
+                "Business/Corporate",
+                "Computers and Technology",
+                "Education",
+            ].includes(prediction)
+        ) {
             return ClassifierLabels.Productivity;
         }
 
