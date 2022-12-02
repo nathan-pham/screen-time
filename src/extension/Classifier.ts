@@ -1,4 +1,5 @@
 import browser from "webextension-polyfill";
+import { entertainment, productivity } from "./classes";
 
 export enum ClassifierLabels {
     Entertainment = 0,
@@ -11,13 +12,9 @@ export default class Classifier {
         "https://website-classifier.phamn23.repl.co/api/predict";
 
     static async classifyWebsite(tabId: number) {
-        try {
-            const content = await Classifier.retrieveWebsiteContent(tabId);
-            const label = await Classifier.classify(content);
-            return label;
-        } catch (e) {
-            return ClassifierLabels.Other;
-        }
+        const content = await Classifier.retrieveWebsiteContent(tabId);
+        const label = await Classifier.classify(content);
+        return label;
     }
 
     static stripContent(content: string) {
@@ -85,24 +82,9 @@ export default class Classifier {
         ).prediction;
 
         // sort primary categories into simpler versions
-        if (
-            [
-                "Adult",
-                "Games",
-                "Streaming Services",
-                "Social Networking and Messaging",
-                "News",
-                "Food",
-            ].includes(prediction)
-        ) {
+        if (entertainment.includes(prediction)) {
             return ClassifierLabels.Entertainment;
-        } else if (
-            [
-                "Business/Corporate",
-                "Computers and Technology",
-                "Education",
-            ].includes(prediction)
-        ) {
+        } else if (productivity.includes(prediction)) {
             return ClassifierLabels.Productivity;
         }
 
